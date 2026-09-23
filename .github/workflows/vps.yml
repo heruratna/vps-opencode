@@ -1,0 +1,50 @@
+name: Remote OpenCode - Darussunnah Parung
+
+on:
+  workflow_dispatch:
+
+jobs:
+  remote-opencode:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl git tmux
+
+      - name: Install OpenCode
+        run: |
+          curl -fsSL https://opencode.ai/install | bash
+
+          export PATH="$HOME/.opencode/bin:$PATH"
+          echo "$HOME/.opencode/bin" >> "$GITHUB_PATH"
+
+          opencode --version
+
+      - name: Set runner SSH password
+        run: |
+          echo "runner:000000" | sudo chpasswd
+
+      - name: Start SSH access
+        uses: valeriangalliat/action-sshd-cloudflared@v4
+
+      - name: Keep runner alive
+        run: |
+          echo ""
+          echo "======================================"
+          echo " REMOTE OPENCODE RUNNER READY"
+          echo "======================================"
+          echo ""
+          echo "SSH masuk sebagai: runner"
+          echo ""
+          echo "Setelah masuk:"
+          echo "  opencode"
+          echo ""
+          echo "======================================"
+
+          while true; do
+            sleep 60
+          done
