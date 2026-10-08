@@ -1,4 +1,4 @@
-name: Remote OpenCode - Darussunnah Parung
+name: Remote OpenCode
 
 on:
   workflow_dispatch:
